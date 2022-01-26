@@ -11,65 +11,28 @@
  int idade;
  int main();
  
- struct elemento {
-    char pergunta [200];
-	int pontuacao;
+ 
+ 
+ 
+ struct geral {
+    char perguntaPaciente [200];
+	int resultado;
 	
  };
  
-      printf("Tem febre: \n");
-      scanf("%c", &res1);
-      if(res1 == 'S' || res1 == 's'){
-      	soma = soma + 5;
-	  }
-      
-      printf("Tem dor de cabeça: \n");
-      scanf("%c", &res2);
-      if(res2 == 'S' || res2 == 's'){
-      	soma = soma + 1;
-	  }
-	  
-	  printf("Tem secrecao nasal: \n");
-      scanf("%c", &res3);
-      if(res3 == 'S' || res3 == 's'){
-      	soma = soma + 1;
-	  }
-	  printf("Tem dor/irritacao na garganta: \n");
-      scanf("%c", &res4);
-      if(res4 == 'S' || res4 == 's'){
-      	soma = soma + 1;
-	  }
-	  printf("Tem tosse seca: \n");
-      scanf("%c", &res5);
-      if(res5 == 'S' || res5 == 's'){
-      	soma = soma + 3;
-	  }
-	  printf("Tem dificuldade respiratoria: \n");
-      scanf("%c", &res6);
-      if(res6 == 'S' || res6 == 's'){
-      	soma = soma + 10;
-	  }
-	  printf("Tem dores no corpo: \n");
-      scanf("%c", &res7);
-      if(res7 == 'S' || res7 == 's'){
-      	soma = soma + 1;
-	  }
-	  printf("Tem diarreia: \n");
-      scanf("%c", &res8);
-      if(res8 == 'S' || res8 == 's'){
-      	soma = soma + 1;
-	  }
-	  printf("Esteve em contato, nos últimos 14 dias, com um caso diagnosticado com covid-19: \n");
-      scanf("%c", &res9);
-      if(res9 == 'S' || res9 == 's'){
-      	soma = soma + 10;
-	  }
-	  
-	  printf("Esteve em locais com grande aglomeração: \n");
-      scanf("%c", &res10);
-      if(res10 == 'S' || res10 == 's'){
-      	soma = soma + 3;
-	  }
+ struct geral questionario[] = {
+ 	{ .perguntaPaciente = "Tem febre: ", .resultado = 5 },
+ 	{ .perguntaPaciente = "Tem dor de cabeca: ", .resultado = 1 },
+ 	{ .perguntaPaciente = "Tem secrecao nasal ou espirros: ", .resultado = 1 },
+ 	{ .perguntaPaciente = "Tem dor/irritacao na garganta: ", .resultado = 1 },
+ 	{ .perguntaPaciente = "Tem tosse seca: ", .resultado = 3 },
+ 	{ .perguntaPaciente = "Tem dificuldade respiratoria: ", .resultado = 10 },
+ 	{ .perguntaPaciente = "Tem dores no corpo: ", .resultado = 1 },
+ 	{ .perguntaPaciente = "Tem diarreia: ", .resultado = 1 },
+ 	{ .perguntaPaciente = "Esteve em contato, nos ultimos 14 dias, com um caso diagnosticado com covid-19:", .resultado = 10 },
+ 	{ .perguntaPaciente = "Esteve em locais com grande aglomeracao:", .resultado = 3 },
+ };
+ 	 
  
  
  void perguntas(){	
@@ -78,44 +41,45 @@
 	int soma = 0;
 	int i = 0;
 	
-	FILE *arquivo;
-	arquivo = fopen("dataBase.txt", "a");
+	FILE *arquivoTxt;
+	arquivoTxt = fopen("dataBase.txt", "a");
 	
-	if (arquivo==NULL)
+	if (arquivoTxt==NULL)
 	{
 		printf("Falha ao tentar criar o arquivo");
 	}
 	
 	system("@cls || clear");
-	printf("Responda as perguntas abaixo com sim(S) ou não (N)\n");
+	printf("Responda as perguntas abaixo com sim(S) ou nao (N)\n");
 	printf("--------------------------------------------------\n");
 	for(i = 0; i < 10; i++){
-		printf("%s", questoes[i].pergunta);
+		printf("%s", questionario[i].perguntaPaciente);
 		scanf("%c", &res);
 		fflush(stdin);
-		fprintf(arquivo, "%s: %c\n", questoes[i].pergunta, res);
+		fprintf(arquivoTxt, "%s: %c\n", questionario[i].perguntaPaciente, res);
 		if(res == 's'|| res == 's'){
-			soma = soma + questoes[i].pontuacao;
+			soma = soma + questionario[i].resultado;
 		}
+		
 	
    }
-   fprintf(arquivo, "total %d" , soma);
-   flcose(arquivo);
    
+    fprintf(arquivoTxt, "resultado final: %d", soma);
+    fclose(arquivoTxt);
    
    system("@cls || clear");
    if(soma >= 0 && soma < 10){
-       printf("Voce somou %d todos os pontos e tem que se encaminhar para a sala de baixo risco", soma);
+       printf("Voce somou %d todos os pontos e tem que  ir para a sala de baixo risco\n", soma);
    } 
    if(soma >= 10 && soma < 20){
-   	   printf("Voce somou %d todos os pontos e tem que se encaminhar para a sala de medio risco", soma);
+   	   printf("Voce somou %d todos os pontos e tem que ir para a sala de medio risco\n", soma);
    } 
    if(soma >= 20){
-   	   printf("Voce somou %d todos os pontos e tem que se encaminhar para a sala de alto risco", soma);
+   	   printf("Voce somou %d todos os pontos e tem que ir encaminhar para a sala de alto risco\n", soma);
    }  
    soma = 0;
    
-   fprint("presione enter para volta para as opcoes principal..");
+   printf("presione enter para volta para as opcoes principal..");
    getchar();
    main();
   
@@ -123,12 +87,12 @@
    
  }
  
- void cadastrarPaciente(){
+ void cadastraroPaciente(){
  	 
- 	 FILE *arquivo;
-	 arquivo = fopen("dataBase.txt", "a");
+ 	 FILE *arquivoTxt;
+	 arquivoTxt = fopen("dataBase.txt", "a");
 	 
-	 if (arquivo==NULL)
+	 if (arquivoTxt==NULL)
 	 {
 	 	printf("Falha ao tentar criar o arquivo");
 	 }
@@ -149,8 +113,8 @@
 	 scanf("%d", &idade);
 	 fflush(stdin);
 	 
-	 fprintf(arquivo, "Nome: %s\nCPF: %s\nSexo: %s\nIdade: %d\n", nome, cpf, sexo, idade);
-	 fclose(arquivo);
+	 fprintf(arquivoTxt, "Nome: %s\nCPF: %s\nSexo: %s\nIdade: %d\n", nome, cpf, sexo, idade);
+	 fclose(arquivoTxt);
 	 
 	 printf("Dados guardado\n");
 	 getchar();
@@ -177,7 +141,7 @@
 	 	 	 break;
 	 	 
 		 case 1: 
-             cadastrarPaciente();
+             cadastraroPaciente();
 			 break;
 		 default:
 		     break;	 	 
@@ -185,4 +149,3 @@
 	 
  	 
  }
-
